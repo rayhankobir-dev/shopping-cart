@@ -25,31 +25,31 @@
 
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button class="btn btn-default"><i id="phoneQnt-decrement" class="fas fa-minus"></i></button>
+                           <input id="phone-quantity" type="text" class="form-control text-center" value="1">
+                           <button class="btn btn-default"><i id="phoneQnt-increment" class="fas fa-plus"></i></button>
                         </div>
-                        <h5>$1219</h5>
-                        <img src="images/remove.png" alt="" class="remove-item">
+                        <h5>$<span id="phone-price">1229</span></h5>
+                        <img id="remove-item-1" src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
                </div>
 
                <div class="cart-item">
-                  <div class="row">
+                  <div id="row" class="row">
                      <div class="col-md-7 center-item mx-auto">
                         <img src="images/product-2.png" alt="">
                         <h5>iPhone 11 Silicone Case - Black</h5>
                      </div>
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button class="btn btn-default"><i id="phoneCaseQnt-decrement" class="fas fa-minus"></i></button>
+                           <input id="phone-case-quantity" type="text" class="form-control text-center" value="1">
+                           <button class="btn btn-default"><i id="phoneCaseQnt-increment" class="fas fa-plus"></i></button>
 
                         </div>
-                        <h5>$59</h5>
-                        <img src="images/remove.png" alt="" class="remove-item">
+                        <h5 >$ <span id="phone-case-price">59</span></h5>
+                        <img id="remove-item-2" src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
                </div>
@@ -64,9 +64,9 @@
                      </div>
 
                      <div class="col-md-4 status">
-                        <h5>$1,278</h5>
-                        <h5>$0</h5>
-                        <h5>$1,278</h5>
+                        <h5>$ <span id="subtotal">00</span></h5>
+                        <h5>$ <span id="tax">00</span></h5>
+                        <h5>$ <span id="total">00</span></h5>
                      </div>
                   </div>
                </div>
@@ -77,6 +77,65 @@
          </div>
       </div>
    </section>
+   <script>
+      calculateTotalPrice();
+
+      document.getElementById('remove-item-1').addEventListener("click",function(event){
+         event.target.parentNode.parentNode.parentNode.parentNode.removeChild(event.target.parentNode.parentNode.parentNode);
+      })
+
+      document.getElementById('remove-item-2').addEventListener("click",function(event){
+         event.target.parentNode.parentNode.parentNode.parentNode.removeChild(event.target.parentNode.parentNode.parentNode);
+      })
+      
+
+      document.getElementById('phoneQnt-increment').addEventListener("click",function(){
+         changeQuantity(true,'phone-quantity',1229,'phone-price');
+         calculateTotalPrice();
+      })
+      
+      document.getElementById('phoneQnt-decrement').addEventListener("click",function(){
+         changeQuantity(false,'phone-quantity',1229,'phone-price');
+         calculateTotalPrice();
+      })
+
+      document.getElementById('phoneCaseQnt-increment').addEventListener("click",function(){
+         changeQuantity(true,'phone-case-quantity',59,'phone-case-price');
+         calculateTotalPrice();
+      })
+      
+      document.getElementById('phoneCaseQnt-decrement').addEventListener("click",function(){
+         changeQuantity(false,'phone-case-quantity',59,'phone-case-price');
+         calculateTotalPrice();
+      })
+
+
+      function changeQuantity(isIncrease,qnt,unitPrice,pro){
+         let currentQnt = parseInt(document.getElementById(qnt).value);
+         if(isIncrease){
+            currentQnt++;
+         }
+         if(!isIncrease && currentQnt > 1 ){
+            currentQnt--;
+         }
+         document.getElementById(qnt).value = currentQnt;
+         const newPrice = currentQnt * unitPrice;
+         document.getElementById(pro).innerText = newPrice;
+      }
+
+      function calculateTotalPrice(){
+         const totalPhonePrice = parseFloat(document.getElementById('phone-price').innerText);
+         const totalPhoneCasePrice = parseFloat(document.getElementById('phone-case-price').innerText);
+         const subTotalPrice = totalPhoneCasePrice + totalPhonePrice;
+         document.getElementById('subtotal').innerText = subTotalPrice;
+         const tax = calculateTax(subTotalPrice);
+         document.getElementById('tax').innerText = tax;
+         document.getElementById('total').innerText = subTotalPrice + tax;
+      }
+      function calculateTax(subtotalPrice){
+         return (subtotalPrice*7) / 100; 
+      }
+   </script>
 </body>
 
 </html>
